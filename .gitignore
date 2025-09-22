@@ -10,6 +10,7 @@ __pycache__/
 *.manifest
 *.spec
 
+
 *.log
 *.sqlite3
 db.sqlite3
