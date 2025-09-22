@@ -1,0 +1,15 @@
+mivenv/
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+*.log
+*.sqlite3
+db.sqlite3
