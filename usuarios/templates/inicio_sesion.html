@@ -1,0 +1,16 @@
+{% extends 'navbar.html' %}
+
+{% block sidebar %}
+
+{% endblock %}
+{% block content %} 
+<div class="form-floating mb-3">
+  <h2>Inicio de Sesión</h2>
+  <form method="post" class="row g-3"> 
+    {% csrf_token %}
+    {{form.usuario}}
+    {{form.password}}
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+    </div>
+{% endblock %}

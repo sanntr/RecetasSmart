@@ -7,4 +7,4 @@ class Familia(models.Model):
 class Usuario(AbstractUser):
     familia = models.ForeignKey(Familia, on_delete=models.CASCADE, null=True, blank=True)
     es_admin_familia = models.BooleanField(default=False)
-
+    
