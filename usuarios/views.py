@@ -1,15 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.template import loader
-from .forms import crear_usuarios, iniciar_sesion
-from .models import Usuario 
-from django.contrib.auth import authenticate, login
+from .forms import crear_usuarios, iniciar_sesion, crear_familia as form_familia
+from .models import Familia, Usuario 
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
+# Vista para crear un nuevo usuario
 @login_required(login_url='/usuarios/iniciar_sesion/')
 def crear_usuario(request):
-
+    verificacion =verificar_admin(request)
+    if verificacion:
+        return verificacion
     form = crear_usuarios.UsuarioForm()
 
     if request.method == 'POST':
@@ -19,7 +23,8 @@ def crear_usuario(request):
                 first_name=form.cleaned_data['nombre'],
                 last_name=form.cleaned_data['apellido'],
                 email=form.cleaned_data['email'],
-                username=form.cleaned_data['usuario']
+                username=form.cleaned_data['usuario'],
+                family_id=request.user.familia_id
             )
             usuario.set_password(form.cleaned_data['password'])
             usuario.save()
@@ -30,7 +35,7 @@ def crear_usuario(request):
     
     return HttpResponse(status=200,content= template.render({'form':form}, request))
 
-
+# Vista para iniciar sesión
 def  iniciar(request):
     form = iniciar_sesion.IniciarSesionForm()
     if request.method == 'POST':
@@ -41,8 +46,47 @@ def  iniciar(request):
             user = authenticate(request,username=usuario, password=password)
             if user is not None:
                 login(request, user)
-                # Redirigir a la página de inicio o a la página deseada después del inicio de sesión exitoso
+                # Se debe cambiar para que redireccione a la pagina inicial de la familia
                 return HttpResponse(status=200, content="Inicio de sesión exitoso.")
             else:
+                mensaje = "Usuario o contraseña incorrectos."
                 form.add_error(None, "Usuario o contraseña incorrectos.")
+                return HttpResponse(status=200, content=loader.get_template('inicio_sesion.html').render({'form': iniciar_sesion.IniciarSesionForm(), 'message': mensaje}, request))
     return HttpResponse(status=200, content=loader.get_template('inicio_sesion.html').render({'form': iniciar_sesion.IniciarSesionForm()}, request))
+
+
+# Vista para cerrar sesión
+@login_required(login_url='/usuarios/iniciar_sesion/')
+def  salir(request):
+    logout(request)
+    return redirect('/usuarios/iniciar_sesion/')
+
+# Vista para crear una nueva familia
+def crear_familia(request):
+    form = form_familia.FamiliaAdminForm()
+    if request.method == 'POST':
+        form = form_familia.FamiliaAdminForm(request.POST)
+        if form.is_valid():
+            familia=Familia.objects.create(nombre=form.cleaned_data['nombre_familia'])
+            
+            usuario = Usuario.objects.create_user(
+                username=form.cleaned_data['usuario'],
+                first_name=form.cleaned_data['nombre'],
+                last_name=form.cleaned_data['apellido'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                familia=familia,
+                es_admin_familia=True
+            )
+
+            login(request, usuario)
+
+            #Se debe cambiar para que redireccione a la pagina inicial de la familia
+            return HttpResponse(status=201, content="Familia creada exitosamente.")
+    return HttpResponse(status=200, content=loader.get_template('crear_familia.html').render({'form': form}, request))
+
+
+#funciones auxiliares
+def verificar_admin(request):
+    if not request.user.es_admin_familia:
+        return HttpResponse(status=403, content=loader.get_template('acceso_denegado.html').render({}, request))
