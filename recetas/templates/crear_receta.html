@@ -1,0 +1,47 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Crear Receta</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Título</label>
+      {{ receta_form.titulo }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Pasos de la receta</label>
+      {{ receta_form.pasos_receta }}
+    </div>
+
+    <h4>Productos usados en la receta</h4>
+    {{ formset.management_form }}
+    <div id="productos-formset">
+      {% for form in formset %}
+      <div class="row g-3 mb-2 border p-2 rounded">
+        <div class="col-md-6">
+          {{ form.producto }}
+        </div>
+        <div class="col-md-4">
+          {{ form.cantidad_uso }}
+        </div>
+        <div class="col-md-2">
+          {% if form.instance.pk %}
+            <label class="form-check-label">Eliminar</label>
+            {{ form.DELETE }}
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="mt-3">
+      <button type="submit" class="btn btn-success">Guardar Receta</button>
+      <a href="" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

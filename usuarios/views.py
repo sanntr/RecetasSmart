@@ -85,6 +85,28 @@ def crear_familia(request):
             return HttpResponse(status=201, content="Familia creada exitosamente.")
     return HttpResponse(status=200, content=loader.get_template('crear_familia.html').render({'form': form}, request))
 
+# Vista para listar usuarios de la familia al administrador
+@login_required(login_url='/usuarios/iniciar_sesion/')
+def listar_usuarios(request):
+    verificar=verificar_admin(request)
+    if verificar:
+        return verificar
+    usuarios = Usuario.objects.filter(familia=request.user.familia, is_active=True, es_admin_familia=False)
+    return HttpResponse(status=200, content=loader.get_template('listar_usuarios.html').render({'usuarios': usuarios}, request))
+
+# Vista para eliminar un usuario (desactivar)
+@login_required(login_url='/usuarios/iniciar_sesion/')
+def eliminar_usuario(request, usuario_id):
+    verificar = verificar_admin(request)
+    if verificar:
+        return verificar
+    try:
+        usuario = Usuario.objects.get(id=usuario_id, familia=request.user.familia)
+        usuario.is_active = False
+        usuario.save()
+        return HttpResponse(status=204)
+    except Usuario.DoesNotExist:
+        return HttpResponse(status=404)
 
 #funciones auxiliares
 def verificar_admin(request):

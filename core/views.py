@@ -1,5 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from usuarios.models import Usuario, Familia
+from productos.models import Producto
+from recetas.models import Receta
+from django.contrib.auth.decorators import login_required      
 # Create your views here.
-from django.contrib import messages
+
+@login_required(login_url='/usuarios/iniciar_sesion/')
+def home(request):
+    template = loader.get_template('inicio.html')
+    familia=request.user.familia
+    productos=Producto.objects.filter(familia_id=familia.id)
+    recetas=Receta.objects.filter(familia_id=familia.id)
+    return HttpResponse(template.render({'productos': productos, 'recetas': recetas}, request))

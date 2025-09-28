@@ -11,6 +11,8 @@ class Producto(models.Model):
     cantidad_disponible=models.IntegerField(blank   =   False,    default=0)
     unidad_medida=models.CharField(max_length=10, choices=UnidadMedida.choices,default=UnidadMedida.UNIDAD)
     familia=models.ForeignKey(Familia, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.nombre_producto
 
 class CompraProducto(models.Model):
     fecha_compra=models.DateField(timezone.now)

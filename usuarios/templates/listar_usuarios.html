@@ -1,0 +1,44 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Usuarios de la Familia</h2>
+  
+  {% if usuarios %}
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Usuario</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in usuarios %}
+      <tr>
+        <td>{{ u.first_name }}</td>
+        <td>{{ u.last_name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.username }}</td>
+        <td>
+          <form method="post" action="{% url 'eliminar_usuario' u.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm"
+                    onclick="return confirm('¿Seguro que deseas eliminar a {{ u.username }}?');">
+              Eliminar
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      No hay usuarios registrados en esta familia.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

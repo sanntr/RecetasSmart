@@ -1,0 +1,52 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg p-4">
+    <h2 class="mb-3 text-center">Panel de la Familia {{ familia.nombre }}</h2>
+    <p class="text-muted text-center">
+      Bienvenido <strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong>
+    </p>
+
+    <div class="row mt-4">
+      <!-- Recetas -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Recetas</h5>
+            {% if recetas %}
+              <ul class="list-group mb-3">
+                {% for receta in recetas %}
+                  <li class="list-group-item">{{ receta.nombre }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">No hay recetas registradas.</p>
+            {% endif %}
+            <a href="{% url 'listar_recetas' %}" class="btn btn-success">Ver todas</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Productos -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Productos</h5>
+            {% if productos %}
+              <ul class="list-group mb-3">
+                {% for producto in productos %}
+                  <li class="list-group-item">{{ producto.nombre }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">No hay productos registrados.</p>
+            {% endif %}
+            <a href="{% url 'listar_productos' %}" class="btn btn-warning">Ver todos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
