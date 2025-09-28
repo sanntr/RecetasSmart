@@ -5,29 +5,29 @@ from .models import Receta
 from django.http import HttpResponse
 from django.template import loader
 # Create your views here.
+
 @login_required(login_url='/usuarios/iniciar_sesion/')
 def crear_receta(request):
     if request.method == 'POST':
         receta_form = RecetaForm(request.POST)
-        formset = RecetaProductoFormSet(request.POST, prefix="productos")
-
-        if receta_form.is_valid() and formset.is_valid():
+        if receta_form.is_valid():
             receta = receta_form.save(commit=False)
             receta.familia = request.user.familia
             receta.save()
 
-            # Guardar productos asociados
-            productos = formset.save(commit=False)
-            for producto in productos:
-                producto.receta = receta
-                producto.save()
+            # ahora el formset se crea con la instancia de la receta
+            formset = RecetaProductoFormSet(request.POST, instance=receta)
 
-            return redirect('listar_recetas')  # Redirige al listado de recetas
+            if formset.is_valid():
+                formset.save()
+                return HttpResponse(status=201, content="Receta creada exitosamente.")
+        else:
+            formset = RecetaProductoFormSet(request.POST)  # si hay error
+
     else:
         receta_form = RecetaForm()
-        formset = RecetaProductoFormSet(prefix="productos")
+        formset = RecetaProductoFormSet()
 
-    # Cargar el template con loader
     template = loader.get_template('crear_receta.html')
     context = {
         'receta_form': receta_form,
