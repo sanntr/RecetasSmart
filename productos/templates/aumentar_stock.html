@@ -1,0 +1,14 @@
+{% extends 'search.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>📦 Aumentar stock de {{ producto.nombre_producto }}</h2>
+    <p>Stock actual: <strong>{{ producto.cantidad_disponible }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">➕ Aumentar Stock</button>
+        <a href="{% url 'listar_productos' %}" class="btn btn-secondary">🔙 Volver</a>
+    </form>
+</div>
+{% endblock %}

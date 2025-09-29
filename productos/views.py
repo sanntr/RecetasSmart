@@ -1,8 +1,9 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.decorators import login_required
-from .forms import ProductoForm
+from .forms import ProductoForm , AumentarStockForm
+from django.contrib import messages
 from .models import Producto
 # Create your views here.
 def principal(request):
@@ -32,3 +33,21 @@ def crear_producto(request):
 def listar_productos(request):
     productos = Producto.objects.filter(familia=request.user.familia)  # Solo los de la familia del usuario
     return render(request, 'listar_productos.html', {'productos': productos})
+
+
+@login_required(login_url='/usuarios/iniciar_sesion/')
+def aumentar_stock(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id, familia=request.user.familia)
+
+    if request.method == "POST":
+        form = AumentarStockForm(request.POST)
+        if form.is_valid():
+            cantidad = form.cleaned_data['cantidad']
+            producto.cantidad_disponible += cantidad
+            producto.save()
+            messages.success(request, f"✅ Stock de {producto.nombre_producto} aumentado en {cantidad}. Ahora tiene {producto.cantidad_disponible}.")
+            return redirect("listar_productos")  # ajusta al nombre de tu vista de productos
+    else:
+        form = AumentarStockForm()
+
+    return render(request, "aumentar_stock.html", {"form": form, "producto": producto})

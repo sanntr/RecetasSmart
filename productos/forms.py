@@ -10,3 +10,6 @@ class ProductoForm(forms.ModelForm):
             'cantidad_disponible': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad disponible'}),
             'unidad_medida': forms.Select(attrs={'class': 'form-select'}),
         }
+
+class AumentarStockForm(forms.Form):
+    cantidad = forms.IntegerField(min_value=1, label="Cantidad a aumentar")

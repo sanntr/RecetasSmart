@@ -1,4 +1,4 @@
-{% extends "navbar.html" %}
+{% extends "search.html" %}
 
 {% block content %}
 <div class="container mt-5">
@@ -11,6 +11,7 @@
         <th>Nombre</th>
         <th>Cantidad Disponible</th>
         <th>Unidad de Medida</th>
+        <th>Agregar Stock</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,8 @@
         <td>{{ producto.nombre_producto }}</td>
         <td>{{ producto.cantidad_disponible }}</td>
         <td>{{ producto.get_unidad_medida_display }}</td>
+        <td>
+          <a href="{% url 'aumentar_stock' producto.id %}" class="btn btn-sm btn-success">➕ Aumentar Stock</a>
       </tr>
       {% endfor %}
     </tbody>

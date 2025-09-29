@@ -1,0 +1,8 @@
+
+{% extends "navbar.html" %}
+
+{% block sidebar %}
+    <span><a class="navbar-brand ms-2" href="{% url 'listar_recetas' %}">Listar recetas</a></span>
+    <span><a class="navbar-brand ms-2" href="{% url 'crear_receta' %}">Agregar receta</a></span>
+    <span><a class="navbar-brand ms-2" href="{% url 'historico_recetas' %}">Histórico recetas</a></span>
+{% endblock %}

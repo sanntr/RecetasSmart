@@ -2,7 +2,6 @@
 {% extends "navbar.html" %}
 
 {% block sidebar %}
-    <span><a class="navbar-brand ms-2" href="#">Listar productos</a></span>
-    <span><a class="navbar-brand ms-2" href="#">Agregar producto</a></span>
-    <span><a class="navbar-brand ms-2" href="#">Buscar producto</a></span>
+    <span><a class="navbar-brand ms-2" href="{% url 'listar_productos' %}">Listar productos</a></span>
+    <span><a class="navbar-brand ms-2" href="{% url 'crear_producto' %}">Agregar producto</a></span>
 {% endblock %}

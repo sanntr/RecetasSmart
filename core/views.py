@@ -13,4 +13,5 @@ def home(request):
     familia=request.user.familia_id
     productos=Producto.objects.filter(familia_id=familia)
     recetas=Receta.objects.filter(familia_id=familia)
-    return HttpResponse(template.render({'productos': productos, 'recetas': recetas}, request))
+    familia_nombre=Familia.objects.get(id=familia).nombre
+    return HttpResponse(template.render({'productos': productos, 'recetas': recetas, 'familia': familia_nombre}, request))

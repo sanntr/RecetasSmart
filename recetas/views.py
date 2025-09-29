@@ -33,6 +33,7 @@ def crear_receta(request):
         'formset': formset
     }
     return HttpResponse(template.render(context, request))
+
 @login_required(login_url='/usuarios/iniciar_sesion/')
 def listar_recetas(request):
     if request.method == "POST":
