@@ -1,0 +1,34 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">📜 Histórico de Recetas</h2>
+
+    {% if historicos %}
+        <table class="table table-striped table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Receta</th>
+                    <th>Cantidad Ejecutada</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in historicos %}
+                <tr>
+                    <td>{{ h.fecha|date:"d/m/Y H:i" }}</td>
+                    <td>{{ h.receta.titulo }}</td>
+                    <td>{{ h.cantidad_receta }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">
+            Aún no se ha ejecutado ninguna receta en tu familia.
+        </div>
+    {% endif %}
+
+    <a href="{% url 'listar_recetas' %}" class="btn btn-secondary mt-3">⬅ Volver al listado de recetas</a>
+</div>
+{% endblock %}

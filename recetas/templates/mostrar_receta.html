@@ -1,0 +1,41 @@
+{% extends 'navbar.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">🍳 {{ receta.titulo }}</h2>
+
+    {% if message %}
+        <div class="alert {% if '✅' in message %}alert-success{% else %}alert-danger{% endif %}">
+            {{ message }}
+            <a href="{% url 'listar_recetas' %}" class="btn btn-sm btn-light ms-3">⬅ Volver al listado</a>
+        </div>
+    {% endif %}
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">📋 Pasos</h5>
+            <p class="card-text">{{ receta.pasos_receta }}</p>
+        </div>
+    </div>
+
+    <h4>🥗 Productos utilizados</h4>
+    <ul class="list-group mb-4">
+        {% for producto in productos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ producto.producto.nombre_producto }}
+                <span class="badge bg-primary rounded-pill">
+                    {{ producto.cantidad_uso }}
+                </span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No hay productos registrados para esta receta.</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">▶ Ejecutar Receta</button>
+    </form>
+
+    <a href="{% url 'listar_recetas' %}" class="btn btn-secondary">⬅ Volver al listado</a>
+</div>
+{% endblock %}

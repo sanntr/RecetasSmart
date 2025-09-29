@@ -1,0 +1,10 @@
+<form method="post" action="{% url 'ejecutar_receta' receta.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning">▶ Ejecutar Receta</button>
+</form>
+{% if message %}
+<div class="alert {% if '✅' in message %}alert-success{% else %}alert-danger{% endif %} d-flex justify-content-between align-items-center" role="alert">
+    <span>{{ message }}</span>
+    <a href="{% url 'listar_recetas' %}" class="btn btn-sm btn-outline-light">⬅ Volver al listado</a>
+</div>
+{% endif %}

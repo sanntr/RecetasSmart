@@ -8,6 +8,6 @@
     <h2 class="text-danger">🚫 Acceso Denegado</h2>
     <p class="mt-3">No tienes permisos para acceder a esta sección.</p>
     {% comment %} cambiar la redirección a la página de inicio de la familia {% endcomment %}
-    <a href="/" class="btn btn-primary mt-3">Volver al inicio</a>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Volver al inicio</a>
 </div>
 {% endblock %}

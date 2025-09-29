@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/usuarios/iniciar_sesion/')
 def home(request):
     template = loader.get_template('inicio.html')
-    familia=request.user.familia
-    productos=Producto.objects.filter(familia_id=familia.id)
-    recetas=Receta.objects.filter(familia_id=familia.id)
+    familia=request.user.familia_id
+    productos=Producto.objects.filter(familia_id=familia)
+    recetas=Receta.objects.filter(familia_id=familia)
     return HttpResponse(template.render({'productos': productos, 'recetas': recetas}, request))

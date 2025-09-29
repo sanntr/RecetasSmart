@@ -47,7 +47,7 @@ def  iniciar(request):
             if user is not None:
                 login(request, user)
                 # Se debe cambiar para que redireccione a la pagina inicial de la familia
-                return HttpResponse(status=200, content="Inicio de sesión exitoso.")
+                return redirect('/inicio/')
             else:
                 mensaje = "Usuario o contraseña incorrectos."
                 form.add_error(None, "Usuario o contraseña incorrectos.")

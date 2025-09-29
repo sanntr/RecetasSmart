@@ -17,7 +17,7 @@
             {% if recetas %}
               <ul class="list-group mb-3">
                 {% for receta in recetas %}
-                  <li class="list-group-item">{{ receta.nombre }}</li>
+                  <li class="list-group-item">{{ receta.titulo }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -36,7 +36,7 @@
             {% if productos %}
               <ul class="list-group mb-3">
                 {% for producto in productos %}
-                  <li class="list-group-item">{{ producto.nombre }}</li>
+                  <li class="list-group-item">{{ producto.nombre_producto }}</li>
                 {% endfor %}
               </ul>
             {% else %}

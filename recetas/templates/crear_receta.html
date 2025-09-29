@@ -32,7 +32,6 @@
             {% endfor %}
         </div>
 
-        <!-- Botón para añadir más productos -->
         <div class="col-12 mb-3">
             <button type="button" class="btn btn-outline-primary w-100" id="add-producto">
                 ➕ Agregar producto
@@ -49,23 +48,23 @@
 document.addEventListener("DOMContentLoaded", function () {
     let formsetDiv = document.getElementById("productos-formset");
     let addBtn = document.getElementById("add-producto");
-    let totalForms = document.querySelector("[id$='-TOTAL_FORMS']"); // ✅ dinámico
+    let totalForms = document.querySelector("[id$='-TOTAL_FORMS']");
 
     addBtn.addEventListener("click", function () {
         let currentFormCount = parseInt(totalForms.value);
         let emptyFormHtml = `{{ formset.empty_form.as_p|escapejs }}`;
 
-        // Reemplazar __prefix__ por el número del formulario nuevo
+
         emptyFormHtml = emptyFormHtml.replace(/__prefix__/g, currentFormCount);
 
-        // Crear un contenedor para el nuevo formulario
+
         let div = document.createElement("div");
         div.classList.add("row", "g-2", "mb-2", "border", "p-2", "rounded", "formset-form");
         div.innerHTML = emptyFormHtml;
 
         formsetDiv.appendChild(div);
 
-        // Aumentar el contador de formularios
+   
         totalForms.value = currentFormCount + 1;
     });
 });

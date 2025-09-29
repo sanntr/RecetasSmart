@@ -10,6 +10,7 @@ class Receta(models.Model):
     productos=models.ManyToManyField(Producto,through="RecetaProducto")
     familia=models.ForeignKey(Familia, on_delete=models.CASCADE)
     
+    
 #tabla intermediaria
 class RecetaProducto(models.Model):
     producto=models.ForeignKey(Producto, on_delete=models.SET_NULL,null=True,blank=True)
